@@ -10,7 +10,7 @@ const GameBoard = () => {
 
     const initializeGame = () => {
         const initializedCards = [
-            {id: 1, image: 'images/cat1.jpg', isFlipped: false, isMatched: false},
+            {id: 1, image: 'images/cat8.jpg', isFlipped: false, isMatched: false},
             {id: 2, image: 'images/cat2.jpg', isFlipped: false, isMatched: false},
             {id: 3, image: 'images/cat3.jpg', isFlipped: false, isMatched: false},
             {id: 4, image: 'images/cat4.jpg', isFlipped: false, isMatched: false},
