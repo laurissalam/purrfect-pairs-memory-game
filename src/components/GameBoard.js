@@ -29,6 +29,18 @@ const GameBoard = () => {
         return cardsArray;
     };
 
+    const handleCardClick = (id) => {
+        // flip the clicked card 
+        const updatedCards = cards.map(card => {
+            if(card.id === id){
+                return { ...card, isFlipped: true };
+            }
+            return card;
+        });
+        setCards(updatedCards);
+        // add logic to check for matches
+    };
+
     return (
         <div className="game-board">
             {cards.map((card) => (
