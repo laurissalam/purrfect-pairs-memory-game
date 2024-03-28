@@ -3,6 +3,8 @@ import Card from './Card';
 
 const GameBoard = () => {
     const [cards, setCards] = useState([]);
+    const [flippedCards, setFlippedCards] = useState([]);
+    const [matchedCards, setMatchedCards] = useState([]);
 
     useEffect(() => {
         initializeGame();
@@ -30,6 +32,13 @@ const GameBoard = () => {
     };
 
     const handleCardClick = (id) => {
+        if(flippedCards.length === 2){
+            return;
+        }
+
+        const newFlippedCards = [...flippedCards, id];
+        setFlippedCards(newFlippedCards);
+
         // flip the clicked card 
         const updatedCards = cards.map(card => {
             if(card.id === id){
@@ -38,7 +47,40 @@ const GameBoard = () => {
             return card;
         });
         setCards(updatedCards);
-        // add logic to check for matches
+        
+        // Check for a match if two cards are flipped 
+        if(newFlippedCards.length === 2){
+            const [firstCardId, secondCardId] = newFlippedCards;
+            const firstCard = updatedCards.find(card => card.id === firstCardId);
+            const secondCard = updatedCards.find(card => card.id === secondCardId);
+
+            if(firstCard.image === secondCard.image){
+                // It's a match
+                setMatchedCards(prev => [...prev, firstCardId, secondCardId]);
+                // reset flipped cards 
+                setFlippedCards([]);
+            }else{
+                // not a match, flip them back after a delay
+                setTimeout(() => {
+                    setCards(cards =>
+                        cards.map(card => {
+                            if(card.id === firstCardId || card.id === secondCardId){
+                                return { ...card, isFlipped: false };
+                            }
+                            return card;
+                        }),
+                        );
+                setFlippedCards([]);
+                }, 1000);
+            }
+        }
+
+        useEffect(() => {
+            if(matchedCards.length === cards.length){
+                alert("You have won! You found all matches:)");
+                // reset game or restart function here
+            }
+        }, [matchedCards, cards]);
     };
 
     return (
